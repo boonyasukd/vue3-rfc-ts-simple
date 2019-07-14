@@ -1,9 +1,9 @@
 import * as log from 'loglevel';
 import { state, provide } from 'vue-function-api';
-import { NewCustomerForm, NewProductForm } from '../../models';
+import { Newable, NewCustomerForm, NewProductForm } from '../../models';
 
 const symbols = {
-  dataStore: Symbol(),
+  getFormData: Symbol(),
   saveCustomer: Symbol(),
   saveProduct: Symbol(),
   reset: Symbol(),
@@ -29,6 +29,7 @@ function useStore() {
       },
     },
   });
+  const getFormData = <T>(type: Newable<T>) => data.formData[type.name];
   const reset = () => {
     data.formData[NewCustomerForm.name] = {
       firstName: null,
@@ -54,7 +55,7 @@ function useStore() {
   };
 
   provide({
-    [symbols.dataStore]: data,
+    [symbols.getFormData]: getFormData,
     [symbols.saveCustomer]: saveCustomer,
     [symbols.saveProduct]: saveProduct,
     [symbols.reset]: reset,

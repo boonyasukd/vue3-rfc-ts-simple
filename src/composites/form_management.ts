@@ -1,13 +1,12 @@
-import * as log from 'loglevel';
 import { Errors } from 'validatorjs';
 import { provide, inject, computed, Wrapper } from 'vue-function-api';
 import { Newable, NewCustomerForm, NewProductForm } from '../models';
 import { symbols as storeSymbols } from './base/store';
-import { rules } from './base/validation_rules';
+import { getRules } from './base/validation_rules';
 import { useValidation } from './base/validation';
 
 const symbols = {
-  formName: Symbol(),
+  formData: Symbol(),
   formErrors: Symbol(),
 };
 
@@ -16,16 +15,18 @@ const saves = {
   [NewProductForm.name]: storeSymbols.saveProduct,
 };
 
+function getFormData<T>(type: Newable<T>) {
+  return (inject(storeSymbols.getFormData) as Function)(type);
+}
+
 function useFormManager<T>(type: Newable<T>) {
   const formName = type.name;
-  log.info(`setting up form logic for: ${formName}`);
-  const data = inject(storeSymbols.dataStore) as any;
-  const { valid, errors } = useValidation(data.formData[formName], rules[formName]);
+  const { valid, errors } = useValidation(getFormData(type), getRules(type));
   const save = inject(saves[formName]);
   const reset = inject(storeSymbols.reset);
 
   provide({
-    [symbols.formName]: formName,
+    [symbols.formData]: getFormData(type),
     [symbols.formErrors]: errors,
   });
 
@@ -33,14 +34,13 @@ function useFormManager<T>(type: Newable<T>) {
 }
 
 function useFormFieldManager(fieldName: string) {
-  const data = inject(storeSymbols.dataStore) as any;
-  const formName = inject(symbols.formName) as unknown as string;
+  const formData = inject(symbols.formData) as any;
   const errors = inject(symbols.formErrors) as Wrapper<Errors>;
 
   const value = computed(
-    () => data.formData[formName][fieldName],
+    () => formData[fieldName],
     (val) => {
-      data.formData[formName][fieldName] = val;
+      formData[fieldName] = val;
     },
   );
   const error = computed(() => errors.value.first(fieldName));

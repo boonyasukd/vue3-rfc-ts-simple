@@ -1,5 +1,5 @@
 import { Rules } from 'validatorjs';
-import { NewCustomerForm, NewProductForm } from '../../models';
+import { Newable, NewCustomerForm, NewProductForm } from '../../models';
 
 interface ModelRules {
   [name: string] : Rules
@@ -21,4 +21,6 @@ const rules: ModelRules = {
   },
 };
 
-export { rules };
+const getRules = <T>(type: Newable<T>) => rules[type.name];
+
+export { getRules };
