@@ -4,8 +4,7 @@ import { Newable, NewCustomerForm, NewProductForm } from '../../models';
 
 const symbols = {
   getFormData: Symbol(),
-  saveCustomer: Symbol(),
-  saveProduct: Symbol(),
+  getSaveFunction: Symbol(),
   reset: Symbol(),
 };
 
@@ -53,11 +52,20 @@ function useStore() {
     log.info(`saving a product:\n${JSON.stringify(data.formData.NewProductForm)}`);
     reset(); // fake save; do reset instead
   };
+  const getSaveFunction = <T>(type: Newable<T>) => {
+    switch (type.name) {
+      case NewCustomerForm.name:
+        return saveCustomer;
+      case NewProductForm.name:
+        return saveProduct;
+      default:
+        throw Error(`Unsupported form model: ${type.name}`);
+    }
+  };
 
   provide({
     [symbols.getFormData]: getFormData,
-    [symbols.saveCustomer]: saveCustomer,
-    [symbols.saveProduct]: saveProduct,
+    [symbols.getSaveFunction]: getSaveFunction,
     [symbols.reset]: reset,
   });
 

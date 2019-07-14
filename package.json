@@ -42,6 +42,7 @@
       "import/prefer-default-export": "off",
       "object-curly-newline": "off",
       "symbol-description": "off",
+      "arrow-parens": "off",
       "no-restricted-syntax": [
         "error",
         "WithStatement"
