@@ -1,19 +1,13 @@
 import * as log from 'loglevel';
 import { state, provide } from 'vue-function-api';
-import { Form, SymbolLookup, NewCustomerForm, NewProductForm } from '../../models';
+import { NewCustomerForm, NewProductForm } from '../../models';
 
 const symbols = {
   dataStore: Symbol(),
   saveCustomer: Symbol(),
   saveProduct: Symbol(),
   reset: Symbol(),
-} as SymbolLookup;
-
-interface StoreModel {
-  formData: {
-    [formName: string]: Form,
-  }
-}
+};
 
 function useStore() {
   log.info('setting up a global store...');
@@ -34,28 +28,7 @@ function useStore() {
         price: null,
       },
     },
-  } as StoreModel);
-  const saveCustomer = () => {
-    log.info(`saving a customer:\n${JSON.stringify(data.formData.NewCustomerForm)}`);
-    // reset formData
-    data.formData[NewCustomerForm.name] = {
-      firstName: null,
-      lastName: null,
-      address: null,
-      phoneNum: null,
-      email: null,
-    };
-  };
-  const saveProduct = () => {
-    log.info(`saving a product:\n${JSON.stringify(data.formData.NewProductForm)}`);
-    // reset formData
-    data.formData[NewProductForm.name] = {
-      name: null,
-      description: null,
-      productCode: null,
-      price: null,
-    };
-  };
+  });
   const reset = () => {
     data.formData[NewCustomerForm.name] = {
       firstName: null,
@@ -71,6 +44,14 @@ function useStore() {
       price: null,
     };
   };
+  const saveCustomer = () => {
+    log.info(`saving a customer:\n${JSON.stringify(data.formData.NewCustomerForm)}`);
+    reset(); // fake save; do reset instead
+  };
+  const saveProduct = () => {
+    log.info(`saving a product:\n${JSON.stringify(data.formData.NewProductForm)}`);
+    reset(); // fake save; do reset instead
+  };
 
   provide({
     [symbols.dataStore]: data,
@@ -82,4 +63,4 @@ function useStore() {
   return {};
 }
 
-export { useStore, symbols, StoreModel };
+export { useStore, symbols };

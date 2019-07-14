@@ -8,7 +8,6 @@
     "lint": "vue-cli-service lint --no-fix"
   },
   "dependencies": {
-    "change-case": "3.1.0",
     "core-js": "2.6.5",
     "loglevel": "1.6.3",
     "validatorjs": "3.15.1",
@@ -43,7 +42,10 @@
       "import/prefer-default-export": "off",
       "object-curly-newline": "off",
       "symbol-description": "off",
-      "no-restricted-syntax": ["error", "WithStatement"],
+      "no-restricted-syntax": [
+        "error",
+        "WithStatement"
+      ],
       "no-useless-constructor": "off",
       "no-empty-function": [
         "error",

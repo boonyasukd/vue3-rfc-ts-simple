@@ -1,14 +1,6 @@
 type Newable<T> = { new (...args: any[]): T; };
 
-interface SymbolLookup {
-  [formName: string]: symbol
-}
-
-interface Form {
-  [fieldName: string]: any
-}
-
-class NewCustomerForm implements Form {
+class NewCustomerForm {
   constructor(
     public firstName: string | null,
     public lastName: string | null,
@@ -18,7 +10,7 @@ class NewCustomerForm implements Form {
   ) {}
 }
 
-class NewProductForm implements Form {
+class NewProductForm {
   constructor(
     public name: string | null,
     public description: string | null,
@@ -27,4 +19,4 @@ class NewProductForm implements Form {
   ) {}
 }
 
-export { Newable, SymbolLookup, Form, NewCustomerForm, NewProductForm };
+export { Newable, NewCustomerForm, NewProductForm };
