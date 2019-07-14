@@ -10,25 +10,25 @@ const symbols = {
   formErrors: Symbol(),
 };
 
-function getFormData<T>(type: Newable<T>) {
-  return (inject(storeSymbols.getFormData) as Function)(type);
+function getFormData<T>(formType: Newable<T>) {
+  return (inject(storeSymbols.getFormData) as Function)(formType);
 }
 
-function getSaveFunction<T>(type: Newable<T>) {
-  return (inject(storeSymbols.getSaveFunction) as Function)(type);
+function getSaveFunction<T>(formType: Newable<T>) {
+  return (inject(storeSymbols.getSaveFunction) as Function)(formType);
 }
 
-function useFormManager<T>(type: Newable<T>) {
-  const { valid, errors } = useValidation(getFormData(type), getRules(type));
-  const save = getSaveFunction(type);
+function useFormManager<T>(formType: Newable<T>) {
+  const { valid, errors } = useValidation(getFormData(formType), getRules(formType));
+  const save = getSaveFunction(formType);
   const reset = inject(storeSymbols.reset);
 
   provide({
-    [symbols.formData]: getFormData(type),
+    [symbols.formData]: getFormData(formType),
     [symbols.formErrors]: errors,
   });
 
-  return { formName: type.name, valid, save, reset };
+  return { formName: formType.name, valid, save, reset };
 }
 
 function useFormFieldManager(fieldName: string) {

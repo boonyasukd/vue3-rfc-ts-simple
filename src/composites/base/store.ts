@@ -28,7 +28,7 @@ function useStore() {
       },
     },
   });
-  const getFormData = <T>(type: Newable<T>) => data.formData[type.name];
+  const getFormData = <T>(formType: Newable<T>) => data.formData[formType.name];
   const reset = () => {
     data.formData[NewCustomerForm.name] = {
       firstName: null,
@@ -52,14 +52,14 @@ function useStore() {
     log.info(`saving a product:\n${JSON.stringify(data.formData.NewProductForm)}`);
     reset(); // fake save; do reset instead
   };
-  const getSaveFunction = <T>(type: Newable<T>) => {
-    switch (type.name) {
+  const getSaveFunction = <T>(formType: Newable<T>) => {
+    switch (formType.name) {
       case NewCustomerForm.name:
         return saveCustomer;
       case NewProductForm.name:
         return saveProduct;
       default:
-        throw Error(`Unsupported form model: ${type.name}`);
+        throw Error(`Unsupported form model: ${formType.name}`);
     }
   };
 
