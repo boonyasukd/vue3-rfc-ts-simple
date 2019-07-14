@@ -1,29 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <div class="center-heading">
+      <img src="./assets/logo.png">
+      <h3>
+        <code>function-based api</code> demo
+      </h3>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <NewCustomerForm/>
+            <NewProductForm/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { createComponent } from 'vue-function-api';
+import { useStore } from './composites/base/store';
+import NewCustomerForm from './components/NewCustomerForm.vue';
+import NewProductForm from './components/NewProductForm.vue';
 
-export default Vue.extend({
-  name: 'app',
-  components: {
-    HelloWorld,
+export default createComponent({
+  setup(props, context) {
+    useStore();
   },
+  components: { NewCustomerForm, NewProductForm },
 });
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css';
+
+.form-title {
+  margin-bottom: 11px;
+}
+.center-heading {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  padding: 10px 0;
+}
+.center-heading img {
+  width: 90px;
 }
 </style>

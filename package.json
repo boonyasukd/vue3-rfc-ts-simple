@@ -5,13 +5,18 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --no-fix"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "change-case": "3.1.0",
+    "core-js": "2.6.5",
+    "loglevel": "1.6.3",
+    "validatorjs": "3.15.1",
+    "vue": "2.6.10",
+    "vue-function-api": "2.0.6"
   },
   "devDependencies": {
+    "@types/validatorjs": "3.15.0",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-eslint": "^3.9.0",
     "@vue/cli-plugin-typescript": "^3.9.0",
@@ -34,7 +39,21 @@
       "@vue/airbnb",
       "@vue/typescript"
     ],
-    "rules": {},
+    "rules": {
+      "import/prefer-default-export": "off",
+      "object-curly-newline": "off",
+      "symbol-description": "off",
+      "no-restricted-syntax": ["error", "WithStatement"],
+      "no-useless-constructor": "off",
+      "no-empty-function": [
+        "error",
+        {
+          "allow": [
+            "constructors"
+          ]
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     }
