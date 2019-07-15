@@ -1,22 +1,24 @@
 type Newable<T> = { new (...args: any[]): T; };
 
-class NewCustomerForm {
+interface Form {}
+
+class NewCustomerForm implements Form {
   constructor(
-    public firstName: string | null,
-    public lastName: string | null,
-    public address: string | null,
-    public phoneNum: string | null,
-    public email: string | null,
+    public firstName: string | null = null,
+    public lastName: string | null = null,
+    public address: string | null = null,
+    public phoneNum: string | null = null,
+    public email: string | null = null,
   ) {}
 }
 
-class NewProductForm {
+class NewProductForm implements Form {
   constructor(
-    public name: string | null,
-    public description: string | null,
-    public productCode: string | null,
-    public price: number | null,
+    public name: string | null = null,
+    public description: string | null = null,
+    public productCode: string | null = null,
+    public price: number | null = null,
   ) {}
 }
 
-export { Newable, NewCustomerForm, NewProductForm };
+export { Newable, Form, NewCustomerForm, NewProductForm };
