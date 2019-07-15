@@ -1,11 +1,12 @@
 import * as log from 'loglevel';
 import { state, provide } from 'vue-function-api';
-import { Newable, NewCustomerForm, NewProductForm } from '../../models';
+import { Newable, Form, NewCustomerForm, NewProductForm } from '../../models';
+import { Key } from '../../utils';
 
 const symbols = {
-  getFormData: Symbol(),
-  getSaveFunction: Symbol(),
-  reset: Symbol(),
+  getFormData: new Key<(_: Newable<any>) => Form>(),
+  getSaveFunction: new Key<(_: Newable<any>) => () => void>(),
+  reset: new Key<() => void>(),
 };
 
 function useStore() {
@@ -13,46 +14,24 @@ function useStore() {
 
   const data = state({
     formData: {
-      [NewCustomerForm.name]: {
-        firstName: null,
-        lastName: null,
-        address: null,
-        phoneNum: null,
-        email: null,
-      },
-      [NewProductForm.name]: {
-        name: null,
-        description: null,
-        productCode: null,
-        price: null,
-      },
+      [NewCustomerForm.name]: new NewCustomerForm(),
+      [NewProductForm.name]: new NewProductForm(),
     },
   });
-  const getFormData = <T>(formType: Newable<T>) => data.formData[formType.name];
-  const reset = () => {
-    data.formData[NewCustomerForm.name] = {
-      firstName: null,
-      lastName: null,
-      address: null,
-      phoneNum: null,
-      email: null,
-    };
-    data.formData[NewProductForm.name] = {
-      name: null,
-      description: null,
-      productCode: null,
-      price: null,
-    };
-  };
-  const saveCustomer = () => {
+
+  function getFormData(formType: Newable<any>) { return data.formData[formType.name]; }
+
+  function saveCustomer() {
     log.info(`saving a customer:\n${JSON.stringify(data.formData.NewCustomerForm)}`);
     reset(); // fake save; do reset instead
-  };
-  const saveProduct = () => {
+  }
+
+  function saveProduct() {
     log.info(`saving a product:\n${JSON.stringify(data.formData.NewProductForm)}`);
     reset(); // fake save; do reset instead
-  };
-  const getSaveFunction = <T>(formType: Newable<T>) => {
+  }
+
+  function getSaveFunction(formType: Newable<any>) {
     switch (formType.name) {
       case NewCustomerForm.name:
         return saveCustomer;
@@ -61,12 +40,17 @@ function useStore() {
       default:
         throw Error(`Unsupported form model: ${formType.name}`);
     }
-  };
+  }
+
+  function reset() {
+    data.formData[NewCustomerForm.name] = new NewCustomerForm();
+    data.formData[NewProductForm.name] = new NewProductForm();
+  }
 
   provide({
-    [symbols.getFormData]: getFormData,
-    [symbols.getSaveFunction]: getSaveFunction,
-    [symbols.reset]: reset,
+    [symbols.getFormData.symbol]: getFormData,
+    [symbols.getSaveFunction.symbol]: getSaveFunction,
+    [symbols.reset.symbol]: reset,
   });
 
   return {};

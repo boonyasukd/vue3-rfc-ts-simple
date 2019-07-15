@@ -1,39 +1,33 @@
 import { Errors } from 'validatorjs';
-import { provide, inject, computed, Wrapper } from 'vue-function-api';
+import { provide, computed, Wrapper } from 'vue-function-api';
 import { Newable } from '../models';
 import { symbols as storeSymbols } from './base/store';
 import { getRules } from './base/validation_rules';
 import { useValidation } from './base/validation';
+import { Key, inject } from '../utils';
 
 const symbols = {
-  formData: Symbol(),
-  formErrors: Symbol(),
+  formData: new Key<any>(),
+  formErrors: new Key<Wrapper<Errors>>(),
 };
 
-function getFormData<T>(formType: Newable<T>) {
-  return (inject(storeSymbols.getFormData) as Function)(formType);
-}
-
-function getSaveFunction<T>(formType: Newable<T>) {
-  return (inject(storeSymbols.getSaveFunction) as Function)(formType);
-}
-
-function useFormManager<T>(formType: Newable<T>) {
-  const { valid, errors } = useValidation(getFormData(formType), getRules(formType));
-  const save = getSaveFunction(formType);
+function useFormManager(formType: Newable<any>) {
+  const formData = inject(storeSymbols.getFormData)(formType);
+  const { valid, errors } = useValidation(formData, getRules(formType));
+  const save = inject(storeSymbols.getSaveFunction)(formType);
   const reset = inject(storeSymbols.reset);
 
   provide({
-    [symbols.formData]: getFormData(formType),
-    [symbols.formErrors]: errors,
+    [symbols.formData.symbol]: formData,
+    [symbols.formErrors.symbol]: errors,
   });
 
   return { formName: formType.name, valid, save, reset };
 }
 
 function useFormFieldManager(fieldName: string) {
-  const formData = inject(symbols.formData) as any;
-  const errors = inject(symbols.formErrors) as Wrapper<Errors>;
+  const formData = inject(symbols.formData);
+  const errors = inject(symbols.formErrors);
 
   const value = computed(
     () => formData[fieldName],
