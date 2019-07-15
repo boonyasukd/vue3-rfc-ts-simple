@@ -1,11 +1,7 @@
 import { Rules } from 'validatorjs';
 import { Newable, NewCustomerForm, NewProductForm } from '../../models';
 
-interface ModelRules {
-  [name: string] : Rules
-}
-
-const rules: ModelRules = {
+const rules = {
   [NewCustomerForm.name]: {
     firstName: 'required|alpha|between:3,16',
     lastName: 'required|alpha|between:3,16',
@@ -19,8 +15,10 @@ const rules: ModelRules = {
     productCode: 'required|digits:8',
     price: 'required|numeric',
   },
+} as {
+  [name: string] : Rules
 };
 
-const getRules = <T>(type: Newable<T>) => rules[type.name];
+const getRules = (type: Newable<any>) => rules[type.name];
 
 export { getRules };
