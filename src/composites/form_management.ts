@@ -1,7 +1,7 @@
 import { Errors } from 'validatorjs';
 import { provide, computed, Wrapper } from 'vue-function-api';
 import { Newable } from '../models';
-import { symbols as storeSymbols } from './base/store';
+import { useStore } from './base/store';
 import { getRules } from './base/validation_rules';
 import { useValidation } from './base/validation';
 import { Key, inject } from '../utils';
@@ -12,10 +12,11 @@ const symbols = {
 };
 
 function useFormManager(formType: Newable<any>) {
-  const formData = inject(storeSymbols.getFormData)(formType);
+  const { getFormData, getSaveFunction, reset } = useStore();
+
+  const save = getSaveFunction(formType);
+  const formData = getFormData(formType);
   const { valid, errors } = useValidation(formData, getRules(formType));
-  const save = inject(storeSymbols.getSaveFunction)(formType);
-  const reset = inject(storeSymbols.reset);
 
   provide({
     [symbols.formData.symbol]: formData,
