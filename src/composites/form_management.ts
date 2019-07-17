@@ -7,8 +7,8 @@ import { useValidation } from './base/validation';
 import { Key, inject } from '../utils';
 
 const symbols = {
-  formData: new Key<any>(),
-  formErrors: new Key<Wrapper<Errors>>(),
+  formData: Symbol() as Key<any>,
+  formErrors: Symbol() as Key<Wrapper<Errors>>,
 };
 
 function useFormManager(formType: Newable<any>) {
@@ -19,8 +19,8 @@ function useFormManager(formType: Newable<any>) {
   const { valid, errors } = useValidation(formData, getRules(formType));
 
   provide({
-    [symbols.formData.symbol]: formData,
-    [symbols.formErrors.symbol]: errors,
+    [symbols.formData as symbol]: formData,
+    [symbols.formErrors as symbol]: errors,
   });
 
   return { formName: formType.name, valid, save, reset };
