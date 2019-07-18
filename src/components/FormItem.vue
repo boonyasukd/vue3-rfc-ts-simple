@@ -16,8 +16,11 @@
 import { createComponent } from 'vue-function-api';
 import { useFormFieldManager } from '../composites/form_management';
 
+interface Props { fieldName: string, label: string }
+
 export default createComponent({
-  props: { fieldName: String, label: String },
+  // props declaration hack; this line will be unnecessary when Vue 3 is out
+  props: ['fieldName', 'label'] as unknown as Props,
   setup({ fieldName, label }) {
     const { value, error } = useFormFieldManager(fieldName.toString());
     return { fieldName, label, value, error };
