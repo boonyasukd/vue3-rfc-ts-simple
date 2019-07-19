@@ -26,7 +26,7 @@ import NewCustomerForm from './components/NewCustomerForm.vue';
 import NewProductForm from './components/NewProductForm.vue';
 
 export default createComponent({
-  setup(props, context) {
+  setup() {
     useStore();
   },
   components: { NewCustomerForm, NewProductForm },
