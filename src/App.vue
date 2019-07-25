@@ -20,17 +20,12 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from 'vue-function-api';
-import { useStore } from './composites/base/store';
 import NewCustomerForm from './components/NewCustomerForm.vue';
 import NewProductForm from './components/NewProductForm.vue';
 
-export default createComponent({
-  setup() {
-    useStore();
-  },
+export default {
   components: { NewCustomerForm, NewProductForm },
-});
+};
 </script>
 
 <style>
