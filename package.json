@@ -43,18 +43,10 @@
       "object-curly-newline": "off",
       "symbol-description": "off",
       "arrow-parens": "off",
+      "lines-between-class-members": "off",
       "no-restricted-syntax": [
         "error",
         "WithStatement"
-      ],
-      "no-useless-constructor": "off",
-      "no-empty-function": [
-        "error",
-        {
-          "allow": [
-            "constructors"
-          ]
-        }
       ],
       "no-use-before-define": [
         "error",
